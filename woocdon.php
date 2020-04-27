@@ -11,8 +11,8 @@
 
 // it inserts the entry in the admin settings menu
 function plugin_register_settings() {
-   add_option( 'option_name', 'the coffee');
-   register_setting( 'plugin_options_group', 'option_name', 'plugin_callback' );
+   add_option( 'APIforCDON' );
+   register_setting( 'plugin_options_group', 'APIforCDON', 'plugin_callback' );
 }
 add_action( 'admin_init', 'plugin_register_settings' );
 
@@ -31,12 +31,19 @@ function plugin_options_page()
   <h2>WooCDON</h2>
   <form method="post" action="options.php">
   <?php settings_fields( 'plugin_options_group' ); ?>
-  <h3>make me coffee</h3>
-  <p>??? ok? SUDO! make me coffee</p>
+  <h3>Add Your Credentials For Your CDON Store</h3>
   <table>
   <tr valign="top">
-  <th scope="row"><label for="option_name">Label</label></th>
-  <td><input type="text" id="option_name" name="option_name" value="<?php echo get_option('option_name'); ?>" /></td>
+  <th scope="row"><label for="Merchant ID">Merchant ID</label></th>
+  <td><input type="text" id="Merchant ID" name="Merchant ID" value="<?php echo get_option('Merchant ID'); ?>" /></td>
+  </tr>
+  <tr valign="top">
+  <th scope="row"><label for="SourceId">Source ID</label></th>
+  <td><input type="text" id="Source Id" name="Source Id" value="<?php echo get_option('Source Id'); ?>" /></td>
+  </tr>
+  <tr valign="top">
+  <th scope="row"><label for="APIforCDON">API</label></th>
+  <td><input type="text" id="APIforCDON" name="APIforCDON" value="<?php echo get_option('APIforCDON'); ?>" /></td>
   </tr>
   </table>
   <?php  submit_button(); ?>
