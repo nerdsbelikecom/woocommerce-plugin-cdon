@@ -1,53 +1,49 @@
 <?php
 /*
-    Plugin Name: woocdon
+    Plugin Name: WooCDON
     Plugin URI: https://github.com/nerdsbelikecom/woocommerce-plugin-cdon
-    Description: Free CDON Plugin
+    Description: Free CDON Plugin for WooCommerce.
     Author: Juan Soto
     Author URI: https://www.linkedin.com/in/juan-soto-83bb8765
     Version: 1.0.0
+    Text Domain: woocdon
+    Domain Path: /lang
 */
 
-
-// it inserts the entry in the admin settings menu
-function plugin_register_settings() {
-   add_option( 'APIforCDON' );
-   register_setting( 'plugin_options_group', 'APIforCDON', 'plugin_callback' );
+// Security, don't run outside kids!
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
 }
-add_action( 'admin_init', 'plugin_register_settings' );
 
-// function triggered
-function plugin_register_options_page() {
-  add_options_page('Page Title', 'WooCDON', 'manage_options', 'WooCDON', 'plugin_options_page');
+// Define plugin constants
+if ( !defined( 'WOCDON_PLUGIN_BASE_PATH' ) ) {
+    define( 'WOCDON_PLUGIN_BASE_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 }
-add_action('admin_menu', 'plugin_register_options_page');
 
-// plugin content
-function plugin_options_page()
-{
-?>
-  <div>
-  <?php screen_icon(); ?>
-  <h2>WooCDON</h2>
-  <form method="post" action="options.php">
-  <?php settings_fields( 'plugin_options_group' ); ?>
-  <h3>Add Your Credentials For Your CDON Store</h3>
-  <table>
-  <tr valign="top">
-  <th scope="row"><label for="Merchant ID">Merchant ID</label></th>
-  <td><input type="text" id="Merchant ID" name="Merchant ID" value="<?php echo get_option('Merchant ID'); ?>" /></td>
-  </tr>
-  <tr valign="top">
-  <th scope="row"><label for="SourceId">Source ID</label></th>
-  <td><input type="text" id="Source Id" name="Source Id" value="<?php echo get_option('Source Id'); ?>" /></td>
-  </tr>
-  <tr valign="top">
-  <th scope="row"><label for="APIforCDON">API</label></th>
-  <td><input type="text" id="APIforCDON" name="APIforCDON" value="<?php echo get_option('APIforCDON'); ?>" /></td>
-  </tr>
-  </table>
-  <?php  submit_button(); ?>
-  </form>
-  </div>
-<?php
+if ( !defined( 'WOCDON_PLUGIN_INC_DIR_PATH' ) ) {
+    define( 'WOCDON_PLUGIN_INC_DIR_PATH', WOCDON_PLUGIN_BASE_PATH . '/inc' );
 }
+
+// Load plugin text domain for internationalization.
+function woocdon_load_textdomain() {
+    load_plugin_textdomain( 'woocdon', false, basename( dirname( __FILE__ ) ) . '/lang' );
+}
+add_action( 'plugins_loaded', 'woocdon_load_textdomain' );
+
+// Autoload classes and get plugin instance
+function woocdon_get_plugin_instance() {
+    if ( class_exists( '\\WOCDON\\Inc\\Autoloader' ) ) {
+        \WOCDON\Inc\Autoloader::get_instance();
+    } else {
+        // Handle the error, maybe log or notify the admin
+        error_log( 'WOCDON Autoloader class not found.' );
+    }
+}
+woocdon_get_plugin_instance();
+
+// Run autoloader
+function get_plugin_instance() {
+  \WOCDON\Inc\Autoloader::get_instance();
+}
+get_plugin_instance();
+
