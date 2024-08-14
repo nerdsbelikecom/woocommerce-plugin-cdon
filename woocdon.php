@@ -32,18 +32,11 @@ add_action( 'plugins_loaded', 'woocdon_load_textdomain' );
 
 // Autoload classes and get plugin instance
 function woocdon_get_plugin_instance() {
-    if ( class_exists( '\\WOCDON\\Inc\\Autoloader' ) ) {
-        \WOCDON\Inc\Autoloader::get_instance();
-    } else {
-        // Handle the error, maybe log or notify the admin
-        error_log( 'WOCDON Autoloader class not found.' );
-    }
+  if ( class_exists( '\\WOCDON\\Inc\\Autoloader' ) ) {
+      \WOCDON\Inc\Autoloader::get_instance();
+  } else {
+      // Handle the error, maybe log or notify the admin
+      error_log( 'WOCDON Autoloader class not found.' );
+  }
 }
 woocdon_get_plugin_instance();
-
-// Run autoloader
-function get_plugin_instance() {
-  \WOCDON\Inc\Autoloader::get_instance();
-}
-get_plugin_instance();
-
